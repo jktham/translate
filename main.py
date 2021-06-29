@@ -4,13 +4,14 @@ import numpy as np
 
 pytesseract.pytesseract.tesseract_cmd = r"C:/Program Files/Tesseract-OCR/tesseract"
 
+
 def process_image(n):
     img = cv2.imread('input/' + str(n) + '.jpg')
     img = cv2.cvtColor(src=img, code=cv2.COLOR_BGR2GRAY)
     img = cv2.convertScaleAbs(img, alpha=1, beta=0)
-    kernel = np.ones((1, 1), np.uint8)
-    img = cv2.dilate(img, kernel, iterations=1)
-    img = cv2.erode(img, kernel, iterations=1)
+    kernel = np.ones((2, 2), np.uint8)
+    img = cv2.erode(img, kernel, iterations=4)
+    img = cv2.dilate(img, kernel, iterations=2)
     img = cv2.threshold(cv2.medianBlur(img, 3), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
     return img
 
@@ -32,6 +33,7 @@ def process_text(text):
     text = text.replace("\n", " ")
     text = text.replace("\f", "\n\n")
     text = text.replace("- ", "")
+    text = text.replace("  ", "\n")
     return text
 
 
