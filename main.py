@@ -10,8 +10,8 @@ def process_image(n):
     img = cv2.cvtColor(src=img, code=cv2.COLOR_BGR2GRAY)
     img = cv2.convertScaleAbs(img, alpha=1, beta=0)
     kernel = np.ones((2, 2), np.uint8)
-    img = cv2.erode(img, kernel, iterations=4)
-    img = cv2.dilate(img, kernel, iterations=2)
+    img = cv2.erode(img, kernel, iterations=8)
+    img = cv2.dilate(img, kernel, iterations=6)
     img = cv2.threshold(cv2.medianBlur(img, 3), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
     return img
 
@@ -44,6 +44,6 @@ def output(text):
     return
 
 
-for i in range(0, 10):
+for i in range(64, 70):
     # display_image(process_image(i))
     output(process_text(tesseract(process_image(i))))
